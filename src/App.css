@@ -2,6 +2,8 @@
 .app {
   min-height: 100vh;
   background: var(--bg-secondary);
+  /* 兼容 iOS 刘海安全区 */
+  padding-bottom: env(safe-area-inset-bottom);
 }
 
 /* 欢迎页面 */
@@ -168,6 +170,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
 .toolbar {
@@ -261,6 +265,7 @@
   font-weight: 700;
   color: var(--text-primary);
   margin: 0 0 0.25rem 0;
+  word-break: break-word;
 }
 
 .stats {
@@ -283,6 +288,7 @@
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--text-primary);
+  min-width: 0;
 }
 
 .logout-btn {
@@ -635,6 +641,15 @@
   gap: 0.5rem;
 }
 
+@media (max-width: 480px) {
+  .comment-input-row {
+    flex-direction: column;
+  }
+  .comment-input-row .btn {
+    width: 100%;
+  }
+}
+
 /* 时光轴 */
 .timeline-container { display: flex; flex-direction: column; gap: 1rem; }
 .timeline-group { background: var(--bg-primary); border-radius: var(--radius-lg); box-shadow: var(--shadow); padding: 1rem; }
@@ -720,4 +735,59 @@
   .stats-grid { grid-template-columns: repeat(2, 1fr); }
   .date-highlights { justify-content: center; }
   .date-card { min-width: 120px; }
+}
+
+/* 更细的移动端优化 */
+@media (max-width: 480px) {
+  /* 头部与工具栏堆叠，更利于单手操作 */
+  .toolbar { 
+    flex-direction: column; 
+    align-items: stretch;
+  }
+  .search-input {
+    max-width: none;
+    width: 100%;
+  }
+
+  /* 触控区域更大，便于点击 */
+  .btn, .input { min-height: 44px; }
+  .type-btn, .tab-btn { 
+    padding: 0.6rem 1rem; 
+    font-size: 1rem;
+  }
+  .action-btn { 
+    padding: 0.5rem 0.75rem; 
+    font-size: 1rem;
+  }
+  .post-actions { justify-content: space-between; }
+
+  /* 卡片与容器内边距收紧，避免占屏 */
+  .header { padding: 0.75rem; }
+  .post-form-container { padding: 0.75rem; }
+  .post-card { padding: 0.75rem; }
+  .timeline-group { padding: 0.75rem; }
+
+  /* 心情选择网格在小屏更紧凑 */
+  .mood-selector { grid-template-columns: repeat(3, 1fr); }
+
+  /* 统计区域在小屏单列显示 */
+  .stats-grid { grid-template-columns: 1fr; }
+  .bar-row { grid-template-columns: 88px 1fr 36px; }
+
+  /* 日期卡片在小屏两列自适应 */
+  .date-highlights { gap: 0.75rem; }
+  .date-card { 
+    flex: 1 1 calc(50% - 0.75rem);
+    min-width: 0;
+  }
+
+  /* 欢迎页标题略缩小，避免换行过多 */
+  .welcome-title { font-size: 1.75rem; }
+}
+
+/* 极小屏（老机型）优化 */
+@media (max-width: 360px) {
+  .mood-selector { grid-template-columns: repeat(2, 1fr); }
+  .bar-row { grid-template-columns: 80px 1fr 32px; }
+  .type-btn, .tab-btn { padding: 0.5rem 0.75rem; }
 }
